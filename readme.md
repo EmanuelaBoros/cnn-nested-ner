@@ -55,4 +55,53 @@ transformers==4.18.0
 Depending on your environment, you may need to install `torch` and `torch_scatter` with CUDA-specific wheels.
 
 
+## Data
+
+The training script expects datasets under:
+
+```text
+preprocess/outputs/<dataset_name>/
+  train.jsonlines
+  dev.jsonlines
+  test.jsonlines
+```
+
+Supported dataset names in `train.py`:
+
+- `genia`
+- `ace2004`
+- `ace2005`
+
+GENIA processed files are already included. ACE2004 and ACE2005 must be created from the licensed LDC corpora.
+
+## Preprocessing
+
+See [preprocess/readme.md](preprocess/readme.md) for detailed preprocessing instructions.
+
+In short:
+
+```bash
+cd preprocess
+python process_genia.py
+python process_ace2004.py
+python process_ace2005.py
+```
+
+ACE corpora are not included because they require LDC licenses:
+
+- ACE2004: LDC2005T09
+- ACE2005: LDC2006T06
+
+The preprocessing scripts use the provided split files in:
+
+```text
+preprocess/splits/
+  ace2004/
+  ace2005/
+  genia/
+```
+
+
+
+
 
