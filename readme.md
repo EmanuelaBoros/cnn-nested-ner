@@ -102,6 +102,67 @@ preprocess/splits/
 ```
 
 
+## Training
+
+The script chooses a default pretrained encoder based on the dataset:
+
+- `genia`: `dmis-lab/biobert-v1.1`
+- `ace2004`, `ace2005`: `roberta-base`
+- custom names: `roberta-base` unless `--model_name` is provided
+
+GENIA:
+
+```bash
+python train.py \
+  -d genia \
+  -n 5 \
+  -b 8 \
+  --lr 7e-6 \
+  --cnn_dim 200 \
+  --biaffine_size 400 \
+  --n_head 4 \
+  --cnn_depth 3 \
+  --logit_drop 0
+```
+
+ACE2004:
+
+```bash
+python train.py \
+  -d ace2004 \
+  -n 50 \
+  -b 48 \
+  --lr 2e-5 \
+  --cnn_dim 120 \
+  --biaffine_size 200 \
+  --n_head 5 \
+  --cnn_depth 2 \
+  --logit_drop 0.1
+```
+
+ACE2005:
+
+```bash
+python train.py \
+  -d ace2005 \
+  -n 50 \
+  -b 48 \
+  --lr 2e-5 \
+  --cnn_dim 120 \
+  --biaffine_size 200 \
+  --n_head 5 \
+  --cnn_depth 2 \
+  --logit_drop 0
+```
+
+You can override the pretrained encoder with:
+
+```bash
+python train.py -d genia --model_name dmis-lab/biobert-v1.1
+```
+
+
+
 
 
 
