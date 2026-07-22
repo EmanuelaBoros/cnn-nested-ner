@@ -161,7 +161,95 @@ You can override the pretrained encoder with:
 python train.py -d genia --model_name dmis-lab/biobert-v1.1
 ```
 
+## GPU Notes
 
+`train.py` is configured for GPU training:
+
+- `Trainer(..., device=0, fp16=True)`
+- `CUDA_VISIBLE_DEVICES` can be set through the environment variable `p`
+
+Example:
+
+```bash
+p=0 python train.py -d genia -n 5 -b 8
+```
+
+For CPU-only training or non-fp16 runs, edit the `device` and `fp16` arguments in `train.py`.
+
+## Custom Data
+
+To train on a custom dataset, prepare:
+
+```text
+preprocess/outputs/<your_dataset>/
+  train.jsonlines
+  dev.jsonlines
+  test.jsonlines
+```
+
+Each line should be a JSON object:
+
+```json
+{
+  "tokens": ["Our", "data", "suggest", "that", "lipoxygenase", "metabolites", "activate", "ROI", "formation", "."],
+  "entity_mentions": [
+    {
+      "entity_type": "protein",
+      "start": 4,
+      "end": 5,
+      "text": "lipoxygenase"
+    },
+    {
+      "entity_type": "protein",
+      "start": 4,
+      "end": 6,
+      "text": "lipoxygenase metabolites"
+    }
+  ]
+}
+```
+
+`start` is inclusive and `end` is exclusive.
+
+By default, `train.py` only accepts `genia`, `ace2004`, and `ace2005`. To use a new dataset name, add it to `get_data()` in `train.py` and point it to your JSONLines folder.
+
+## Outputs
+
+Training creates:
+
+- cached processed tensors under `caches/`
+- fitlog logs under `logs/`
+- evaluation metrics for dev and test sets
+
+The main monitored metric is nested NER F1 on the development set:
+
+```python
+monitor='f#f#dev'
+```
+
+## Notes
+
+- The model supports nested entities through span-level prediction.
+- The included GENIA preprocessing uses document-level train/dev/test splits.
+- ACE2004 and ACE2005 preprocessing follows the document splits used by prior nested NER work.
+- Different sentence tokenization choices can change dataset statistics; the preprocessing scripts are included to make comparisons more consistent.
+
+## Citation
+
+If you use this code, cite the original paper:
+
+**An Embarrassingly Easy but Strong Baseline for Nested Named Entity Recognition**  
+[https://arxiv.org/abs/2208.04534](https://arxiv.org/abs/2208.04534)
+
+```
+@inproceedings{yan2023embarrassingly,
+  title={An embarrassingly easy but strong baseline for nested named entity recognition},
+  author={Yan, Hang and Sun, Yu and Li, Xiaonan and Qiu, Xipeng},
+  booktitle={Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  pages={1442--1452},
+  year={2023}
+}
+```
 
 
 
