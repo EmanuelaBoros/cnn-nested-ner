@@ -19,3 +19,40 @@ The repository includes:
 - training and evaluation code using `fastNLP`, PyTorch, and Hugging Face Transformers
 
 
+## Repository Structure
+
+| Path | Description |
+| --- | --- |
+| `train.py` | Main training script. |
+| `model/model.py` | `CNNNer` model definition. |
+| `model/cnn.py` | Masked CNN layers used to refine span logits. |
+| `model/multi_head_biaffine.py` | Multi-head biaffine span scoring module. |
+| `model/metrics.py` | Nested NER evaluation metric. |
+| `data/ner_pipe.py` | JSONLines loader, tokenizer alignment, and span-matrix construction. |
+| `data/padder.py` | Custom 3D matrix padding for span labels. |
+| `preprocess/` | Dataset preprocessing scripts and split files. |
+| `preprocess/outputs/genia/` | Processed GENIA train/dev/test files included in the repository. |
+| `requirements` | Python dependencies. |
+
+## Installation
+
+Install the listed dependencies:
+
+```bash
+pip install -r requirements
+```
+
+The requirements file contains:
+
+```text
+fastNLP>=1.0.0beta
+pytorch>=1.8.0
+torch_scatter>=2.0.9
+fitlog
+transformers==4.18.0
+```
+
+Depending on your environment, you may need to install `torch` and `torch_scatter` with CUDA-specific wheels.
+
+
+
